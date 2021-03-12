@@ -1,0 +1,86 @@
+git config --global alias.hist "git command without git" (creates an alias)
+git config --global -e (opens git config file in the configured editor)
+git hist -- "filename" (filters out all the commits containing the filename in their message)
+
+git init "name" (initializes new empty local repo)
+git init . (initializes new empty local repo in current folder)
+git status (see local changes)
+git status -s (left column is staging area, right column is working dir)
+git add "filename" (adds file from working dir to staging area)
+git add . (adds everything from working dir to staging area)
+git add -A (when deleting/renaming/adding/updating files without the proper git commands, this will cover all types of modifications in the working dir)
+git commit -m "message" (commits files on staging area using a one-line message in terminal)
+git commit (commits files on staging area and opens git-configured editor to use a multi-line message)
+git commit -am "message" (adds changes to staging area and commits directly. Doesn't work for newly added files.)
+git log (shows all commis history)
+git log --oneline (shortened version)
+git log --oneline --graph --decorate --all (creates a full commit history for all branches in the repo)
+git show (shows last commit and files changes in that commit)
+git show "tagname" (same as git show but associated with tag info)
+git show "commitID" (same as git show but for the specified commit)
+git ls-files (list of iles Git is tracking)
+git restore --staged "filename" (unstages the changes of that file)
+git restore --staged . (unstages all the changes)
+git restore "filename" (removes file changes from working dir)
+git restore . (removes all changes from working dir)
+git mv "filename" "newfilename" (renames the file in the OS and the changes are already in the staging area)
+git rm "filename" (removes the file in the OS and the changes are already in the staging area)
+git diff (compares the changes in the working dir vs the HEAD, the last commit on current branch)
+git diff "ID1" "ID2" (compares the changes on the specific commits)
+git difftool (opens the configured difftool)
+git branch -a (lists all branches in the repo and highlights with an "*" the current)
+git branch -d "branchname" (deletes the branch. We need to switch first)
+git checkout -b "branchname" (creates and switches to a new branch)
+git checkout "branchname" (simply switches to the branch)
+git checkout "remotebranch" (automatically links remotebranch to localbranch and switches to it)
+git merge "branchname" (merges the changes of branchname into to the current branch. We need to switch first before merging)
+git tag "tagname" "branchname" (creates a tag at any commit, in this case the HEAD)
+git tag --list (lists all the tags)
+git tag -d "tagname" (deletes the tag)
+git tag -a "tagname" -m "Info" (creates tag with additional info)
+git tag -f "tagname" "commitID" (updates an existing tag to the specific commit)
+git stash (saves temporary changes before staging them, in this case saves changes on the HEAD. This is useful to later switch to a different branch)
+git stash list (shows all stashes)
+git stash pop (two actions at once, applies the changes saved on the stash and then drops/removes the stash. In this case is the last stash)
+git reset "commitID" --option (*)
+git reflog (shows all the actions taken in the repo. Reset+Reflog is usually good)
+git remote -v (lists all remote connections)
+git remote add origin "remotelink" (links our existing local repo to a remote empty one)
+git remote set-url origin "newrepoURL" (updates the link to the remote repo in case we change the remote repo name)
+git remote show "remotebranch" (shows the details about remotebranch)
+git remote add "remoteupstreamname" "upstreamURL" (this is done when we want to sync the changes accpeted by pull request of the upstream remote repo, to ourmaster local forked version of the remote upstream)
+git push -u "remotebranch" "localbranch" --tags (pushes all local changes from the local branch onto the remote branch and the tags if we have them. This is mostly used when we started local and then initialize an empty remote repo)
+git push -u "remotebranch" "localbranch" (to push a newly created localbranch to become remote)
+git push "remotebranch" "localbranch" (pushes changes from localbranch to remotebranch. Usually only remotebranch needs to be specified, the localbranch is the current one)
+git push origin :"remotebranch" (deletes remote branch, locally)
+git push origin :"tagname" (deletes remote tag, locally)
+git push origin "tagname" (pushes local tags to remote repo)
+git push --force origin "tagname" (forces the local tag update to the remote repo)
+git clone "repoURL" (clones the remote repo onto our local PC. This is used when we started a remote repo)
+git clone "repoURL" "nameoflocalfolder" (same as git clone but this time we specify a local folder name)
+git clone "gistURL" "nameoflocalfolder" (same as the above but for a Gist)
+git pull origin master --allow-unrelated-histories
+git pull (two commands in one, it is a fetch and then a merge. It can be destructive)
+git pull --all (updates all tracking branches at the same time)
+git pull upstream master
+git pull --rebase (moves the HEAD locally one step behind, pull all changes from remote and then places the HEAD after these remote changes)
+git fetch (only fetches the remote changes. Not destructive. It is usually better to do fetch first than pull)
+git fetch -p (same as git fetch but with the prune option. Looks for any dead branches and removes the dead references)
+
+
+Theory:
+3 types of merges
+Fast-foward -> When no changes are detected in the parent branch. Behaves like
+no branching was made at all, applying all commits on the new branch onto the
+parent branch;
+Automatic merging -> When non-conflicting changes are detectec in the parent branch.
+Git resolves automatically any conflicts, preserves both timelines and an
+automatic merge commit is created;
+Manual merge -> When automatic resolving is not possible. 
+
+3 typers of resets*
+Soft -> Basically changes where HEAD is pointing, preserves the staging area and working dir;
+Mixed -> Default, unstages the number of changes preserving working dir only
+Hard -> Any changes pending get wiped out and along with anything in the staging area
+
+Best practice and mandatory: Fetch -> Pull -> Push/merging branches
